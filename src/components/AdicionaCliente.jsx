@@ -1,5 +1,22 @@
 import React from 'react';
-import { Formik } from 'formik'
+import { Formik, Field, useField } from 'formik'
+
+const Campo = ({label, ...props}) => {
+  const [field, meta] = useField(props)
+  return (
+    <div className='form-group'>
+      <label htmlFor={props.id}>{label}</label>
+      <input 
+        {...field}
+        {...props}
+        className={meta.error && meta.touched ? 'is-invalid' : ''}
+      />
+      {meta.error && meta.touched ? (
+        <div className='invalid-feedback'>{meta.error}</div>
+      ) : null }
+    </div>
+  )
+}
 
 const AdicionaCliente = () => {
   return (
@@ -29,45 +46,25 @@ const AdicionaCliente = () => {
       >
         {(props) => (
           <form onSubmit={props.handleSubmit} noValidate>
-            <div className="form-group">
-              <label htmlFor="nome">Nome</label>
-              <input 
+              <Campo 
                 id="nome" 
                 name="nome" 
                 type="text" 
-                value={props.values.nome} 
-                onChange={props.handleChange} 
-                onBlur={props.handleBlur}
-                className={props.errors.nome && props.touched.nome ? 'is-invalid' : ''}
+                label="Nome"
               />
-              {props.errors.nome && props.touched.nome ? <div className='invalid-feedback'>{props.errors.nome}</div> : null}
-            </div>
-            <div className="form-group">
-              <label htmlFor="email">Email</label>
-              <input 
+              <Campo 
                 id="email" 
                 name="email" 
                 type="email" 
-                value={props.values.email} 
-                onChange={props.handleChange} 
-                onBlur={props.handleBlur}
-                className={props.errors.email && props.touched.email ? 'is-invalid' : ''}
+                label="Email"
               />
-              {props.errors.email && props.touched.email ? <div className='invalid-feedback'>{props.errors.email}</div> : null}
-            </div>
-            <div className="form-group">
-              <label htmlFor="date">Data de Nascimento</label>
-              <input 
+              <label htmlFor="nascimento">Data de Nascimento</label>
+              <Campo 
                 id="nascimento" 
                 name="nascimento" 
                 type="date" 
-                value={props.values.nascimento} 
-                onChange={props.handleChange} 
-                onBlur={props.handleBlur}
-                className={props.errors.nascimento && props.touched.nascimento ? 'is-invalid' : ''}
+                label="Data de Nascimento"
               />
-              {props.errors.nascimento && props.touched.nascimento ? <div className='invalid-feedback'>{props.errors.nascimento}</div> : null}
-            </div>
             <button type="submit">Adicionar</button>
           </form>
         )}
